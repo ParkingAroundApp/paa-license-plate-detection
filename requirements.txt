@@ -69,7 +69,6 @@ tensorboard-plugin-wit == 1.7.0
 tensorflow == 2.3.0
 tensorflow-estimator == 2.3.0
 termcolor == 1.1.0
-tifffile == 2020.9.30
 typing-extensions == 3.7.4.3
 urllib3 == 1.25.10
 wheel == 0.35.1
