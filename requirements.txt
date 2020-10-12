@@ -23,3 +23,7 @@ toml==0.10.1
 urllib3==1.25.10
 yarg==0.1.9
 zipp==3.3.0
+Flask==1.1.2
+Flask_RESTful==0.3.8
+Flask_SQLAlchemy==2.4.4
+gunicorn
