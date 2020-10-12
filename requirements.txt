@@ -1,2 +1,5 @@
 Flask==1.1.2
+scikit-image==0.17.2
+keras==2.4.3
+imutils==0.5.3
 gunicorn
