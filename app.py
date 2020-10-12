@@ -1,5 +1,5 @@
 from flask import Flask, url_for, request
-
+from skimage import measure
 app = Flask(__name__)
 
 @app.route('/')
@@ -8,6 +8,7 @@ def index():
 
 @app.route('/hello')
 def hello_world():
+    labels = measure.label()
     return 'Hello, World!'
 
 
