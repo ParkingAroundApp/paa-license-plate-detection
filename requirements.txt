@@ -74,4 +74,5 @@ urllib3 == 1.25.10
 wheel == 0.35.1
 wrapt == 1.12.1
 yarg == 0.1.9
+tifffile
 gunicorn
