@@ -18,8 +18,17 @@ def get_arguments():
 def index():
     return 'hi';
 
-@app.route('/hello')
+@app.route('/hello', methods=['GET'])
 def hello():
+    # data = request.json;
+
+    req_data = request.get_json()
+    userid= req_data['userid']
+    print('data is')
+    print(req_data)
+    print(userid)
+    # print(req_data['userid'])
+    print('end data')
     return 'hello';
 
 @app.route('/find-lp/<imgStr>')
@@ -40,6 +49,42 @@ def findLPwithImg(imgStr):
 
     args = get_arguments()
 
+    img_path = Path(args.image_path)
+
+    # read image
+    img = cv2.imread(str(img_path))
+
+    # start
+    start = time.time()
+
+    # load model
+    model = E2E()
+
+    # recognize license plate
+    image = model.predict(img2)
+    # print("License Plate Text: " + image)
+
+    # end
+    end = time.time()
+
+    print('Model process on %.2f s' % (end - start))
+    return json.dumps(
+        {
+            "firstLine":image['first_line'],
+            "secondLine": image["second_line"],
+            "timeResponse": end-start,
+        }
+    );
+
+@app.route('/findlp')
+def findLPwithImg2():
+    req_data = request.get_json()
+    imageStr = req_data['license-img']
+    image = imageStr[23:]
+    decoded_data = base64.b64decode(image)
+    np_data = np.fromstring(decoded_data, np.uint8)
+    img2 = cv2.imdecode(np_data, cv2.IMREAD_UNCHANGED)
+    args = get_arguments()
     img_path = Path(args.image_path)
 
     # read image
