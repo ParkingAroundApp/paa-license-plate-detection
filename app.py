@@ -80,15 +80,16 @@ def findLPwithImg(imgStr):
 def findLPwithImg2():
     req_data = request.get_json()
     imageStr = req_data['license-img']
+
     image = imageStr[23:]
     decoded_data = base64.b64decode(image)
     np_data = np.fromstring(decoded_data, np.uint8)
-    img2 = cv2.imdecode(np_data, cv2.IMREAD_UNCHANGED)
-    args = get_arguments()
-    img_path = Path(args.image_path)
-
-    # read image
-    img = cv2.imread(str(img_path))
+    img = cv2.imdecode(np_data, cv2.IMREAD_UNCHANGED)
+    scale_percent = 40
+    width = int(img.shape[1] * scale_percent / 100)
+    height = int(img.shape[0] * scale_percent / 100)
+    dsize = (width, height)
+    img = cv2.resize(img, dsize)
 
     # start
     start = time.time()
@@ -97,7 +98,7 @@ def findLPwithImg2():
     model = E2E()
 
     # recognize license plate
-    image = model.predict(img2)
+    image = model.predict(img)
     # print("License Plate Text: " + image)
 
     # end

@@ -54,7 +54,7 @@ class E2E(object):
             # print("License Plate Text: " + license_plate)
             # draw labels
             # self.image = draw_labels_and_boxes(self.image, license_plate, coordinate)
-
+            # cv2.imshow("image",self.image)
         # cv2.imwrite('example.png', self.image)
         # return self.image
         return license_plate
@@ -64,7 +64,7 @@ class E2E(object):
         V = cv2.split(cv2.cvtColor(LpRegion, cv2.COLOR_BGR2HSV))[2]
 
         # adaptive threshold
-        T = threshold_local(V, 15, offset=10, method="gaussian")
+        T = threshold_local(V, 49, offset=5, method="gaussian")
         thresh = (V > T).astype("uint8") * 255
         # cv2.imwrite("step2_1.png", thresh)
         # convert black pixel of digits to white pixel
@@ -74,7 +74,7 @@ class E2E(object):
         thresh = cv2.medianBlur(thresh, 5)
 
         # connected components analysis
-        labels = measure.label(thresh, connectivity=2, background=0)
+        labels = measure.label(thresh, connectivity=1, background=0)
 
         # loop over the unique components
         for label in np.unique(labels):
