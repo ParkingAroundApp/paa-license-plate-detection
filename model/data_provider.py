@@ -1,6 +1,6 @@
 import keras
 import numpy as np
-import data_utils
+from model import data_utils
 
 
 class Datasets(object):

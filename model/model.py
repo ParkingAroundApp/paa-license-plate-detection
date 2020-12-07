@@ -1,8 +1,7 @@
-import keras
 import numpy as np
 
-import config
-from data_provider import Datasets
+from model import config
+from model.data_provider import Datasets
 from keras import optimizers
 from keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten
 from keras.callbacks import ReduceLROnPlateau, ModelCheckpoint

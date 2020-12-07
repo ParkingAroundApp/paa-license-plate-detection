@@ -3,11 +3,19 @@ import numpy as np
 from skimage import measure
 from imutils import perspective
 import imutils
-from data_utils import order_points, convert2Square, draw_labels_and_boxes
-from detect import detectNumberPlate
-from model import CNN_Model
+from model.data_utils import order_points, convert2Square
+from model.detect import detectNumberPlate
+from model.model import CNN_Model
 from skimage.filters import threshold_local
-import json
+import random
+import string
+
+
+def get_random_string(length):
+    letters = string.ascii_lowercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str
+
 
 ALPHA_DICT = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'K', 9: 'L', 10: 'M', 11: 'N', 12: 'P',
               13: 'R', 14: 'S', 15: 'T', 16: 'U', 17: 'V', 18: 'X', 19: 'Y', 20: 'Z', 21: '0', 22: '1', 23: '2', 24: '3',
@@ -19,7 +27,7 @@ class E2E(object):
         self.image = np.empty((28, 28, 1))
         self.detectLP = detectNumberPlate()
         self.recogChar = CNN_Model(trainable=False).model
-        self.recogChar.load_weights('./weights/weight.h5')
+        self.recogChar.load_weights('./model/weights/weight.h5')
         self.candidates = []
 
     def extractLP(self):
@@ -54,6 +62,7 @@ class E2E(object):
             # print("License Plate Text: " + license_plate)
             # draw labels
             # self.image = draw_labels_and_boxes(self.image, license_plate, coordinate)
+            # cv2.imwrite("images/"+get_random_string(8)+".jpg", self.image)
             # cv2.imshow("image",self.image)
         # cv2.imwrite('example.png', self.image)
         # return self.image
@@ -144,10 +153,6 @@ class E2E(object):
 
         first_line_str= "".join([str(ele[0]) for ele in first_line]);
         second_line_str= "".join([str(ele[0]) for ele in second_line]);
-        if len(second_line) == 0:  # if license plate has 1 line
-            license_plate = "".join([str(ele[0]) for ele in first_line])
-        else:   # if license plate has 2 lines
-            license_plate = "".join([str(ele[0]) for ele in first_line]) + "-" + "".join([str(ele[0]) for ele in second_line])
         result={
             "first_line": first_line_str,
             "second_line": second_line_str,
